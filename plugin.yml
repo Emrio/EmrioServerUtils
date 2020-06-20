@@ -1,0 +1,4 @@
+name: EmrioServerUtils
+version: 1.0
+author: Emrio
+main: fr.emrio.serverutils.Main
