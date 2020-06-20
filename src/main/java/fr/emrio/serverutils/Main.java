@@ -55,7 +55,7 @@ public class Main extends JavaPlugin {
 				tps = Math.min(tps, 20);
 				
 				DecimalFormat decfmt = new DecimalFormat("#0.00");
-				String header = "\n MSPT: " + msptColor + decfmt.format(mspt) + ChatColor.RESET + " ms - TPS: " + tpsColor + tpsPrefix + decfmt.format(tps) + ChatColor.RESET + " \n";
+				String header = " MSPT: " + msptColor + decfmt.format(mspt) + ChatColor.RESET + " ms - TPS: " + tpsColor + tpsPrefix + decfmt.format(tps) + ChatColor.RESET + " \n";
 				
 				for (Player player : getServer().getOnlinePlayers()) {
 					player.setPlayerListHeader(header);
