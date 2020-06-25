@@ -1,6 +1,7 @@
 package fr.emrio.serverutils;
 
 import java.text.DecimalFormat;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -22,7 +23,9 @@ public class Main extends JavaPlugin {
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				double mspt = watcher.mspt;
+				// MSPT: XX ms - TPS: XX
+				// 		Ping: XX ms
+				final double mspt = watcher.mspt;
 				double tps = getServer().getTPS()[0];
 				
 				ChatColor msptColor;
@@ -54,11 +57,25 @@ public class Main extends JavaPlugin {
 				}
 				tps = Math.min(tps, 20);
 				
-				DecimalFormat decfmt = new DecimalFormat("#0.00");
-				String header = " MSPT: " + msptColor + decfmt.format(mspt) + ChatColor.RESET + " ms - TPS: " + tpsColor + tpsPrefix + decfmt.format(tps) + ChatColor.RESET + " \n";
+				final DecimalFormat decfmt = new DecimalFormat("#0.00");
+				final String header = " MSPT: " + msptColor + decfmt.format(mspt) + ChatColor.RESET + " ms - TPS: " + tpsColor + tpsPrefix + decfmt.format(tps) + ChatColor.RESET + " \n Ping: ";
 				
 				for (Player player : getServer().getOnlinePlayers()) {
-					player.setPlayerListHeader(header);
+					final double ping = player.spigot().getPing();
+					ChatColor pingColor;
+					if (ping < 30) {
+						pingColor = ChatColor.DARK_GREEN;
+					} else if (ping < 75) {
+						pingColor = ChatColor.GREEN;
+					} else if (mspt < 130) {
+						pingColor = ChatColor.YELLOW;
+					} else if (mspt < 400) {
+						pingColor = ChatColor.RED;
+					} else {
+						pingColor = ChatColor.DARK_RED;
+					}
+					final String customHeader = header + pingColor + ping + " ms";
+					player.setPlayerListHeader(customHeader);
 				}
 			}
 		}, 1000, 1000);
